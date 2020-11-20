@@ -16,14 +16,30 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('dictionary');
 });
+
 Route::post('/translate', function (\Illuminate\Http\Request $request) {
     $word = $request->word;
     $dictionary = [
-        'Hello' => 'Xin Chào',
+        'Xin Chào' => 'Hello',
+        'Ghét' => 'Hate',
+        'Mèo' => 'Cat',
+        'Cat' => 'Mèo',
         'Hate' => 'Ghét',
-        'Cat' => 'Mèo'
+        'Hello' => 'Xin Chào'
     ];
-    $key = array_search($word,$dictionary);
-    return view('translate',compact(['key']));
-});
+    $key = array_search($word, $dictionary);
+    if ($key == false) {
+        $key = 'deo tim thay';
+    }
+    return view('translate', compact(['key']));
 
+});
+Route::middleware(['first', 'second'])->group(function () {
+    Route::get('/', function () {
+        // Uses first & second middleware...
+    });
+
+    Route::get('user/profile', function () {
+        // Uses first & second middleware...
+    });
+});
